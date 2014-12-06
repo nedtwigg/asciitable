@@ -1,99 +1,67 @@
 java-ascii-table
 ================
 
-a fork of http://bethecoder.com/applications/products/asciiTable.action
-
-ASCII TABLE (http://code.google.com/p/java-ascii-table/) is a simple framework for generating ASCII tables printable in console. It also provides enhanced APIs to get table buffer which can be rendered in Web pages. The table may or may not have a header. By default all headers are aligned center and data in each row is aligned right. It provides the following APIs:
+Data-driven test-case:
 
 ```
-public void printTable(String[] header, String[][] data);
-public void printTable(String[] header, String[][] data, int dataAlign);
-public void printTable(String[] header, int headerAlign, String[][] data, int dataAlign);
+List<Person> persons = Arrays.asList(
+		new Person("Rick", "Sanchez", 70),
+		new Person("Morty", "Smith", 14)
+		);
+		
+String actual = Table.getTable(persons, Arrays.asList(
+		new Column("First").with(p -> p.first),
+		new Column("Last").with(p -> p.last),
+		new Column("Age").with(p -> Integer.toString(p.age))
+		));
+		
+String expected = 
+		"+-------+---------+-----+\n" +
+		"| First | Last    | Age |\n" +
+		"+-------+---------+-----+\n" +
+		"|  Rick | Sanchez |  70 |\n" +
+		"| Morty |   Smith |  14 |\n" +
+		"+-------+---------+-----+\n";
 
-public String getTable(String[] header, String[][] data);
-public String getTable(String[] header, String[][] data, int dataAlign);
-public String getTable(String[] header, int headerAlign, String[][] data, int dataAlign);
-
-public String getTable(ASCIITableHeader[] headerObjs, String[][] data);
-public void printTable(ASCIITableHeader[] headerObjs, String[][] data);
-
-public String getTable(IASCIITableAware asciiTableAware);
-public void printTable(IASCIITableAware asciiTableAware);
+Assert.assertEquals(expected, actual);
 ```
 
-The print version of APIs print the ASCII table to console where as get version of APIs return the ASCII table buffer as a string. User can align both header and data. The alignment constants are shown below,
+Manual test-case:
 
 ```
-ASCIITable.ALIGN_LEFT   - Header/data left alignment
-ASCIITable.ALIGN_RIGHT  - Header/data right alignment
-ASCIITable.ALIGN_CENTER - Header/data center alignment
-The following snippet shows its simple usage,
-String [] header = { "User Name", "Salary", "Designation", "Address", "Lucky#" };
-String[][] data = {
-	{ "Ram", "2000", "Manager", "#99, Silk board", "1111"  },
-	{ "Sri", "12000", "Developer", "BTM Layout", "22222" },
-	{ "Prasad", "42000", "Lead", "#66, Viaya Bank Layout", "333333" },
-	{ "Anu", "132000", "QA", "#22, Vizag", "4444444" },
-	{ "Sai", "62000", "Developer", "#3-3, Kakinada"  },
-	{ "Venkat", "2000", "Manager"   },
-	{ "Raj", "62000"},
-	{ "BTC"},
-};
-```
-
-`ASCIITable.getInstance().getTable(header, data)%` gives the following output:
-
-```
-+-----------+--------+-------------+------------------------+---------+
-| User Name | Salary | Designation |         Address        |  Lucky# |
-+-----------+--------+-------------+------------------------+---------+
-|       Ram |   2000 |     Manager |        #99, Silk board |    1111 |
-|       Sri |  12000 |   Developer |             BTM Layout |   22222 |
-|    Prasad |  42000 |        Lead | #66, Viaya Bank Layout |  333333 |
-|       Anu | 132000 |          QA |             #22, Vizag | 4444444 |
-|       Sai |  62000 |   Developer |         #3-3, Kakinada |         |
-|    Venkat |   2000 |     Manager |                        |         |
-|       Raj |  62000 |             |                        |         |
-|       BTC |        |             |                        |         |
-+-----------+--------+-------------+------------------------+---------+
-```
-
-ASCIITableHeader class gives fine control over the alignment of header and data rows.
-
-```
-ASCIITableHeader[] headerObjs = {
-	new ASCIITableHeader("User Name", ASCIITable.ALIGN_LEFT),
-	new ASCIITableHeader("Salary"),
-	new ASCIITableHeader("Designation", ASCIITable.ALIGN_CENTER),
-	new ASCIITableHeader("Address", ASCIITable.ALIGN_LEFT),
-	new ASCIITableHeader("Lucky#", ASCIITable.ALIGN_RIGHT),
+String [] header = { "User Name", 
+		"Salary", "Designation",
+		"Address", "Lucky#"
 };
 
 String[][] data = {
-	{ "Ram", "2000", "Manager", "#99, Silk board", "1111"  },
-	{ "Sri", "12000", "Developer", "BTM Layout", "22222" },
-	{ "Prasad", "42000", "Lead", "#66, Viaya Bank Layout", "333333" },
-	{ "Anu", "132000", "QA", "#22, Vizag", "4444444" },
-	{ "Sai", "62000", "Developer", "#3-3, Kakinada"  },
-	{ "Venkat", "2000", "Manager"   },
-	{ "Raj", "62000"},
-	{ "BTC"},
+		{ "Ram", "2000", "Manager", "#99, Silk board", "1111"  },
+		{ "Sri", "12000", "Developer", "BTM Layout", "22222" },
+		{ "Prasad", "42000", "Lead", "#66, Viaya Bank Layout", "333333" },
+		{ "Anu", "132000", "QA", "#22, Vizag", "4444444" },
+		{ "Sai", "62000", "Developer", "#3-3, Kakinada"  },
+		{ "Venkat", "2000", "Manager"   },
+		{ "Raj", "62000"},
+		{ "BTC"},
 };
+
+String expected = 
+		"+-----------+--------+-------------+------------------------+---------+\n" +
+		"| User Name | Salary | Designation | Address                | Lucky#  |\n" +
+		"+-----------+--------+-------------+------------------------+---------+\n" +
+		"|       Ram |   2000 |     Manager |        #99, Silk board |    1111 |\n" +
+		"|       Sri |  12000 |   Developer |             BTM Layout |   22222 |\n" +
+		"|    Prasad |  42000 |        Lead | #66, Viaya Bank Layout |  333333 |\n" +
+		"|       Anu | 132000 |          QA |             #22, Vizag | 4444444 |\n" +
+		"|       Sai |  62000 |   Developer |         #3-3, Kakinada |         |\n" +
+		"|    Venkat |   2000 |     Manager |                        |         |\n" +
+		"|       Raj |  62000 |             |                        |         |\n" +
+		"|       BTC |        |             |                        |         |\n" +
+		"+-----------+--------+-------------+------------------------+---------+\n";
+
+Assert.assertEquals(expected, Table.getTable(header, data));
 ```
 
-`ASCIITable.getInstance().getTable(headerObjs, data)` gives the following output:
+This project is a fork of http://bethecoder.com/applications/products/asciiTable.action by K Venkata Sudhakar. 
 
-```
-+-----------+--------+-------------+------------------------+---------+
-| User Name | Salary | Designation |         Address        |  Lucky# |
-+-----------+--------+-------------+------------------------+---------+
-| Ram       |   2000 |   Manager   | #99, Silk board        |    1111 |
-| Sri       |  12000 |  Developer  | BTM Layout             |   22222 |
-| Prasad    |  42000 |     Lead    | #66, Viaya Bank Layout |  333333 |
-| Anu       | 132000 |      QA     | #22, Vizag             | 4444444 |
-| Sai       |  62000 |  Developer  | #3-3, Kakinada         |         |
-| Venkat    |   2000 |   Manager   |                        |         |
-| Raj       |  62000 |             |                        |         |
-| BTC       |        |             |                        |         |
-+-----------+--------+-------------+------------------------+---------+
-```
+We've stripped out most of the API of the original, but all of the rendering logic of the original remains.  Many thanks to K Venkata.
