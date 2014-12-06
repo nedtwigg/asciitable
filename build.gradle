@@ -1,0 +1,57 @@
+task wrapper(type: Wrapper) {
+	gradleVersion '2.2.1'
+}
+
+repositories {
+	jcenter()
+}
+
+apply plugin: 'java'
+dependencies {
+	testCompile 'junit:junit:3.8.1'
+}
+
+// eclipse
+apply plugin: 'eclipse'
+// eclipse forces cleanEclipse
+tasks.eclipse.dependsOn(cleanEclipse)
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+// make a source jar
+task sourceJar(type: Jar) {
+	from sourceSets.main.allJava
+}
+
+// publish
+apply plugin: 'maven-publish'
+
+group = 'com.bethecoder'
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+
+			artifact sourceJar {
+				classifier "sources"
+			}
+		}
+	}
+
+	repositories {
+		maven {
+			if (project.version.endsWith('-SNAPSHOT')) {
+				url "${dp_maven}/libs-snapshot-local"
+			} else {
+				url "${dp_maven}/libs-release-local"
+			}
+
+			credentials {
+				username "${dp_maven_user}"
+				password "${dp_maven_pass}"
+			}
+		}
+	}
+}
