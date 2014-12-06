@@ -27,7 +27,7 @@ task sourceJar(type: Jar) {
 // publish
 apply plugin: 'maven-publish'
 
-group = 'com.bethecoder'
+group = 'com.bethecoder.java-ascii-table'
 
 publishing {
 	publications {
