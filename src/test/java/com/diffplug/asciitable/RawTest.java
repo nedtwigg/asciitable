@@ -1,7 +1,9 @@
-package com.bethecoder.ascii_table;
+package com.diffplug.asciitable;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.diffplug.asciitable.Table;
 
 public class RawTest {
 	@Test

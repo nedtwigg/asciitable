@@ -1,4 +1,4 @@
-package com.bethecoder.ascii_table;
+package com.diffplug.asciitable;
 
 import java.util.ArrayList;
 import java.util.Arrays;

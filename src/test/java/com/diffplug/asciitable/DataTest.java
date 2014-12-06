@@ -1,10 +1,13 @@
-package com.bethecoder.ascii_table;
+package com.diffplug.asciitable;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.diffplug.asciitable.Column;
+import com.diffplug.asciitable.Table;
 
 public class DataTest {
 	@Test

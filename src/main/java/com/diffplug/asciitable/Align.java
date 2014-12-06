@@ -1,4 +1,4 @@
-package com.bethecoder.ascii_table;
+package com.diffplug.asciitable;
 
 /** Represents a horizontal alignment. */
 public enum Align {
