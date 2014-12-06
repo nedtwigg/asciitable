@@ -2,19 +2,26 @@ package com.diffplug.asciitable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /** A couple of static methods for creating tables. */
 public class Table {
 	/** Returns a formatted table string. */
-	public static <T> String getTable(List<T> objects, List<Column.Data<T>> columns) {
+	public static <T> String getTable(Collection<T> objects, List<Column.Data<T>> columns) {
 		String[][] data = new String[objects.size()][];
-		for (int i = 0; i < objects.size(); ++i) {
+		
+		Iterator<T> iter = objects.iterator();
+		int i = 0;
+		while (i < objects.size()) {
+			T object = iter.next();			
 			data[i] = new String[columns.size()];
 			for (int j = 0; j < columns.size(); ++j) {
-				data[i][j] = columns.get(j).getter.apply(objects.get(i));
+				data[i][j] = columns.get(j).getter.apply(object);
 			}
+			++i;
 		}
 		
 		Column[] rawColumns = columns.stream()
